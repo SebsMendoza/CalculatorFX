@@ -3,143 +3,143 @@ package com.example.calculatorfx;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 
 public class CalculatorController {
 
-    @FXML
-    private Text operationSaved;
-    @FXML
-    private Label textNumbers;
+    private String num1, num2, operator;
 
-    private String firstNum = "";
-    private String secondNum = "";
-    private String operation;
+    @FXML
+    private Label screen;
 
     @FXML
     void butonOne(ActionEvent event) {
-        add("1");
+        screen.setText(screen.getText() + "1");
     }
 
     @FXML
     void buttonTwo(ActionEvent event) {
-        add("2");
+        screen.setText(screen.getText() + "2");
     }
 
     @FXML
     void buttonThree(ActionEvent event) {
-        add("3");
+        screen.setText(screen.getText() + "3");
     }
 
     @FXML
     void buttonFour(ActionEvent event) {
-        add("4");
+        screen.setText(screen.getText() + "4");
     }
 
     @FXML
     void buttonFive(ActionEvent event) {
-        add("5");
+        screen.setText(screen.getText() + "5");
     }
 
     @FXML
     void buttonSix(ActionEvent event) {
-        add("6");
+        screen.setText(screen.getText() + "6");
     }
 
     @FXML
     void buttonSeven(ActionEvent event) {
-        add("7");
+        screen.setText(screen.getText() + "7");
     }
 
     @FXML
     void buttonEight(ActionEvent event) {
-        add("8");
+        screen.setText(screen.getText() + "8");
     }
 
     @FXML
     void buttonNine(ActionEvent event) {
-        add("9");
+        screen.setText(screen.getText() + "9");
     }
 
     @FXML
     void buttonZero(ActionEvent event) {
-        if (!secondNum.equals("")) {
-            add("0");
-        }
+        screen.setText(screen.getText() + "0");
     }
 
     @FXML
-    void buttonClear(ActionEvent event) {
-        secondNum = "";
-        textNumbers.setText("");
-        operationSaved.setText("");
+    void buttonDot(ActionEvent event) {
+        screen.setText(screen.getText() + ".");
     }
 
     @FXML
     void buttonPlus(ActionEvent event) {
-        calculation("+");
+        calculo("+");
     }
 
     @FXML
     void buttonMinus(ActionEvent event) {
-        calculation("-");
+        calculo("-");
     }
 
     @FXML
     void buttonMulti(ActionEvent event) {
-        calculation("*");
+        calculo("*");
     }
 
     @FXML
     void buttonDivide(ActionEvent event) {
-        calculation("/");
+        calculo("/");
     }
 
     @FXML
     void buttonEquals(ActionEvent event) {
-        int first = Integer.parseInt(firstNum);
-        int second = Integer.parseInt(secondNum);
+        setNum2(screen.getText());
+        screen.setText("");
+        screen.setText(calcular());
+        setNum1(calcular());
+    }
 
-        switch (operation) {
-            case "+" -> {
-                int result = first + second;
-                operationSaved.setText(firstNum + " + " + secondNum + " = " + result);
-                textNumbers.setText(String.valueOf(result));
+    @FXML
+    void buttonClear(ActionEvent event) {
+        screen.setText("");
+        setNum1("");
+        setNum2("");
+    }
+
+    public double operation(double num1, double num2, String operator) {
+        switch (operator) {
+            case "+": {
+                return num1 + num2;
             }
-            case "-" -> {
-                int result = first - second;
-                operationSaved.setText(firstNum + " - " + secondNum + " = " + result);
-                textNumbers.setText(String.valueOf(result));
+            case "-": {
+                return num1 - num2;
             }
-            case "/" -> {
-                if (second != 0) {
-                    double result = first / (double) second;
-                    operationSaved.setText(firstNum + " / " + secondNum + " = " + result);
-                    textNumbers.setText(String.valueOf(result));
-                }
+            case "*": {
+                return num1 * num2;
             }
-            case "*" -> {
-                int result = first * second;
-                operationSaved.setText(firstNum + " * " + secondNum + " = " + result);
-                textNumbers.setText(String.valueOf(result));
+            case "/": {
+                return num2 == 0 ? 0 : num1 / num2;
             }
+            default:
+                return 0;
         }
-        secondNum = "";
     }
 
-    public void calculation(String operation) {
-        this.operation = operation;
-        firstNum = secondNum;
-        secondNum = "";
-        operationSaved.setText(firstNum + " " + operation);
+    public void setNum1(String num1) {
+        this.num1 = num1;
     }
 
-    public void updateText() {
-        textNumbers.setText(secondNum);
+    public void setNum2(String num2) {
+        this.num2 = num2;
     }
 
-    public void add(String number) {
-        secondNum += number;
-        updateText();
+    public void setOperador(String operator) {
+        this.operator = operator;
+    }
+
+    public String calcular() {
+        return String.valueOf(operation(Double.parseDouble(num1), Double.parseDouble(num2), operator));
+    }
+
+    private void calculo(String operator) {
+        if (!screen.getText().equalsIgnoreCase(""))
+            setNum1(screen.getText());
+        screen.setText("");
+        setOperador(operator);
     }
 }
